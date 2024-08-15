@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "fastzdp-roleauth"
+version = "0.1.0"
+description = ""
+authors = ["zhangdapeng520 <1156956636@qq.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = "^0.112.0"
+sqlmodel = "^0.0.21"
+pymysql = "^1.1.1"
+
+[[tool.poetry.source]]
+name = "mirrors"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple/"
+priority = "default"
+
+
+[tool.poetry.group.dev.dependencies]
+uvicorn = "^0.30.6"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
