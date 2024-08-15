@@ -1,0 +1,2 @@
+# fastzdp_roleauth
+专为FastAPI打造的基于角色的权限管理框架
