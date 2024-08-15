@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session as SASession
 
 class FastZdpRoleModel(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
-    name: str = Field(index=True)
+    name: str = Field(index=True, unique=True)
     nickname: str
 
 
@@ -81,6 +81,31 @@ def get_role_router(
         role = db.exec(select(FastZdpRoleModel).where(FastZdpRoleModel.id == id)).first()
         if not role:
             raise HTTPException(status_code=404, detail="角色不存在")
+        return role
+
+    @router.put("/{id}/", summary="根据ID修改角色")
+    def update_role_id(
+            id: int,
+            name: str = Body(str, min_length=2, max_length=36),
+            nickname: str | None = Body(None),
+            db: SASession = Depends(get_db),
+    ):
+        role = db.exec(select(FastZdpRoleModel).where(FastZdpRoleModel.id == id)).first()
+        if not role:
+            raise HTTPException(status_code=404, detail="角色不存在")
+
+        if name and name != role.name:
+            tmp_role = db.exec(select(FastZdpRoleModel).where(FastZdpRoleModel.name == name)).first()
+            if tmp_role:
+                raise HTTPException(status_code=400, detail="角色名已存在")
+            role.name = name
+        if nickname:
+            role.nickname = nickname
+
+        db.add(role)
+        db.commit()
+        db.refresh(role)
+
         return role
 
     return router
