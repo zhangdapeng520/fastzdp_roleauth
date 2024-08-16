@@ -23,6 +23,8 @@ app = FastAPI()
 
 app.include_router(fastzdp_roleauth.get_role_router(get_db))  # 角色管理
 app.include_router(fastzdp_roleauth.get_role_user_router(get_db))  # 角色与用户关系管理
+app.include_router(fastzdp_roleauth.get_auth_router(get_db))  # 权限管理
+app.include_router(fastzdp_roleauth.get_role_auth_router(get_db))  # 角色与权限管理
 
 if __name__ == '__main__':
     import uvicorn
