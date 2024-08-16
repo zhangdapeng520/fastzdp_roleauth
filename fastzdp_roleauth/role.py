@@ -108,4 +108,16 @@ def get_role_router(
 
         return role
 
+    @router.delete("/{id}/", summary="根据ID删除角色")
+    def delete_role_id(
+            id: int,
+            db: SASession = Depends(get_db),
+    ):
+        role = db.exec(select(FastZdpRoleModel).where(FastZdpRoleModel.id == id)).first()
+        if not role:
+            raise HTTPException(status_code=404, detail="角色不存在")
+        db.delete(role)
+        db.commit()
+        return role
+
     return router
