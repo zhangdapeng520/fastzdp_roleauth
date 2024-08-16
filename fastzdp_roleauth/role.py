@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Body, Depends, HTTPException, status
+from fastapi import APIRouter, Body, Depends, HTTPException
 from sqlmodel import SQLModel, Field, select
 from typing import Optional
 from sqlalchemy.orm import Session as SASession
@@ -14,9 +14,9 @@ def get_role_router(
         get_db,
         prefix="/fastzdp_roleauth",
 ):
-    router = APIRouter(prefix=prefix, tags=["fastzdp_roleauth"])
+    router = APIRouter(prefix=prefix, tags=["fastzdp_roleauth 角色管理"])
 
-    @router.post("/", summary="新增角色")
+    @router.post("/role/", summary="新增角色")
     def add_role(
             name: str = Body(str, min_length=2, max_length=36),
             nickname: str | None = Body(None),
@@ -40,7 +40,7 @@ def get_role_router(
 
         return {"message": "新增角色成功", "role_id": new_role.id}
 
-    @router.get("/", summary="角色查询")
+    @router.get("/role/", summary="角色查询")
     def get_role(
             page: int = 1,
             size: int = 20,
@@ -73,7 +73,7 @@ def get_role_router(
             "data": results,
         }
 
-    @router.get("/{id}/", summary="根据ID查询角色")
+    @router.get("/role/{id}/", summary="根据ID查询角色")
     def get_role_id(
             id: int,
             db: SASession = Depends(get_db),
@@ -83,7 +83,7 @@ def get_role_router(
             raise HTTPException(status_code=404, detail="角色不存在")
         return role
 
-    @router.put("/{id}/", summary="根据ID修改角色")
+    @router.put("/role/{id}/", summary="根据ID修改角色")
     def update_role_id(
             id: int,
             name: str = Body(str, min_length=2, max_length=36),
@@ -108,7 +108,7 @@ def get_role_router(
 
         return role
 
-    @router.delete("/{id}/", summary="根据ID删除角色")
+    @router.delete("/role/{id}/", summary="根据ID删除角色")
     def delete_role_id(
             id: int,
             db: SASession = Depends(get_db),
